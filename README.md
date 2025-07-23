@@ -17,7 +17,3 @@ Simulate a simple chat application using end-to-end encryption with Key manageme
 ## Reference
 
 [Open Whisper System Signal Protocol in Java](https://github.com/signalapp/libsignal-protocol-java)
-
-## Copyright
-
-© 2025 Your Name. All rights reserved.
