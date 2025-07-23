@@ -13,7 +13,6 @@ public class InputHandler implements Runnable {
     public void run() {
         try {
             Scanner in = new Scanner(System.in);
-            System.out.print("> ");
             while (!client.isClosed()) {
                 String message = in.nextLine();
                 if (message.startsWith("/quit")) {
@@ -31,7 +30,6 @@ public class InputHandler implements Runnable {
                 } else {
                     System.out.println("Unknown command");
                 }
-                System.out.print("> ");
             }
         } catch (Exception e) {
 

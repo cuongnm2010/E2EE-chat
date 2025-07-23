@@ -1,14 +1,12 @@
 package server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-// import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +20,6 @@ public class Server implements Runnable {
     private ServerSocket server;
     private ExecutorService pool;
     private Map<String, String> users = new HashMap<>();
-    private List<MessageInfo> messages = new ArrayList<>();
     private Map<String, String> nicknames = new HashMap<>();
 
     @Override
@@ -44,14 +41,6 @@ public class Server implements Runnable {
         }
     }
 
-    public void broadcast(String sender, String message) {
-        messages.add(new MessageInfo(sender, message));
-        for (ConnectionHandler socket : connections) {
-
-            socket.sendMessage(message);
-        }
-    }
-
     public void addConnection(ConnectionHandler connectionHandler) {
         connections.add(connectionHandler);
     }
@@ -66,12 +55,12 @@ public class Server implements Runnable {
                 server.close();
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            System.err.println("Error during server shutdown");
         }
     }
 
     public String getServerAddress() {
-        return server.getLocalSocketAddress() + " at port " + server.getLocalPort();
+        return "Server is running at port " + server.getLocalPort();
     }
 
     protected boolean lookupUser(String username, String password) {
@@ -104,6 +93,7 @@ public class Server implements Runnable {
 
         return true;
     }
+    
     private String getSHA256HexString(String str) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -130,12 +120,6 @@ public class Server implements Runnable {
             throw new IllegalArgumentException("The username existed!");
         }
         users.put(username, getSHA256HexString(password));
-    }
-
-    public void loadMessages(PrintWriter out) {
-        for (MessageInfo messageInfo : messages) {
-            out.println(messageInfo);
-        }
     }
 
     public void addNickName(String username, String nickname) {
