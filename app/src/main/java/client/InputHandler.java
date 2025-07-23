@@ -32,7 +32,7 @@ public class InputHandler implements Runnable {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
