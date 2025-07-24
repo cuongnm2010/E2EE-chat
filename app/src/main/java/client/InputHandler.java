@@ -26,6 +26,10 @@ public class InputHandler implements Runnable {
                     String[] messageParts = message.split(" ", 2);
                     client.establishSession(messageParts[1]);
                 } else if (message.startsWith("/login") || message.startsWith("/register") || message.startsWith("/listUsers")) {
+                    String[] parts = message.split(" ", 3);
+                    if (parts.length == 3) {
+                        client.setUsername(parts[1]);
+                    }
                     client.send(message);
                 } else {
                     System.out.println("Unknown command");

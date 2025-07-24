@@ -31,6 +31,7 @@ public class Client implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private Socket socket;
+    private String username;
 
     private SignalStoring signalStore = new SignalStoring();
     private Map<String, SessionCipher> sessionCiphers = new HashMap<>();
@@ -103,9 +104,13 @@ public class Client implements Runnable {
     }
 
     public void sendMessage(String recipient, String ordinaryMessage) {
+        if (recipient.equals(username)) {
+            showMsg(ordinaryMessage);
+            return;
+        }
         try {
             SessionCipher cipher = getOrCreateSessionCipher(recipient);
-            
+
             CiphertextMessage ciphertextMessage = cipher.encrypt(ordinaryMessage.getBytes());
             String encryptedMessage = Base64.getEncoder().encodeToString(ciphertextMessage.serialize());
             String messageType = ciphertextMessage.getType() == CiphertextMessage.PREKEY_TYPE ? "PREKEY" : "WHISPER";
@@ -227,8 +232,15 @@ public class Client implements Runnable {
         if (signalStore.hasSessionWith(toUser)) {
             System.out.println("Session already established!");
             return;
+        } else if (username.equals(toUser)) {
+            System.out.println("No session with self");
+            return;
         }
         out.println("PREKEYREQ:" + toUser);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public static void main(String[] args) {
