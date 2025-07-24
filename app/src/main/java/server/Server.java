@@ -93,7 +93,7 @@ public class Server implements Runnable {
 
         return true;
     }
-    
+
     private String getSHA256HexString(String str) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -137,11 +137,16 @@ public class Server implements Runnable {
     }
 
     public void sendPreKeyReq(String fromUser, String targetUser) {
-        ConnectionHandler cH = findConnectionHandler(targetUser);
-        if (cH == null) return;
+        ConnectionHandler target = findConnectionHandler(targetUser);
+        ConnectionHandler source = findConnectionHandler(fromUser);
+        
+        if (target == null) {
+            source.sendMessage("Target user is not online");
+            return;
+        }
 
         String msg = "PREKEYREQ:" + fromUser;
-        cH.sendMessage(msg);
+        target.sendMessage(msg);
     }
 
     public void sendPreKeyBundle(String fromUser, String targetUser, String preKeyBundle) {

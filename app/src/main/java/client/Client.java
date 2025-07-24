@@ -105,10 +105,7 @@ public class Client implements Runnable {
     public void sendMessage(String recipient, String ordinaryMessage) {
         try {
             SessionCipher cipher = getOrCreateSessionCipher(recipient);
-            if (cipher == null) {
-                out.println("PREKEYREQ:" + recipient);
-                return;
-            }
+            
             CiphertextMessage ciphertextMessage = cipher.encrypt(ordinaryMessage.getBytes());
             String encryptedMessage = Base64.getEncoder().encodeToString(ciphertextMessage.serialize());
             String messageType = ciphertextMessage.getType() == CiphertextMessage.PREKEY_TYPE ? "PREKEY" : "WHISPER";
