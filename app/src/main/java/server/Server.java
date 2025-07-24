@@ -139,9 +139,9 @@ public class Server implements Runnable {
     public void sendPreKeyReq(String fromUser, String targetUser) {
         ConnectionHandler target = findConnectionHandler(targetUser);
         ConnectionHandler source = findConnectionHandler(fromUser);
-        
+
         if (target == null) {
-            source.sendMessage("Target user is not online");
+            source.sendMessage("Target user is not online. Use command /listUsers to check");
             return;
         }
 
