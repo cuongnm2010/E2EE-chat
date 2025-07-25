@@ -54,7 +54,7 @@ public class ConnectionHandler implements Runnable {
                     String[] msgParts = message.split(":", 3);
                     server.sendPreKeyBundle(username, msgParts[1], msgParts[2]);
                 } else if (message.startsWith("MSG")) {
-                    // format
+                    
                     String[] msgParts = message.split(":", 3);
 
                     String recipient = msgParts[1];

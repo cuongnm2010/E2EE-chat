@@ -46,7 +46,6 @@ public class Client implements Runnable {
             Thread t = new Thread(handler);
             t.start();
 
-            // String comingMsg;
             handleCommunicationFromServer();
         } catch (IOException e) {
             shutdown();
